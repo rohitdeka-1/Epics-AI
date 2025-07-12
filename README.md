@@ -8,63 +8,37 @@ Epics-AI is an end-to-end AI-powered crop monitoring system using a drone equipp
 
 ## System Architecture Diagram
 
-### Visual Diagram
-
 ![System Architecture](assets/diagram1.png)
 
-### Mermaid Diagram (for Markdown viewers that support Mermaid)
+**Architecture Overview:**
 
-```mermaid
-flowchart LR
-    %% Drone System
-    APM[APM 2.8 Flight Controller]
-    GPS[GPS Module (NEO-M8N)]
-    Pi[Raspberry Pi Zero W2]
-    Cam[Pi Camera (OV5647)]
-    WiFi[Wi-Fi Telemetry Module]
-    Pi --> Cam
-    Pi --> GPS
-    Pi --> WiFi
-    Pi --> APM
+- **Drone System**
+  - APM 2.8 Flight Controller
+  - GPS Module (NEO-M8N)
+  - Raspberry Pi Zero W2
+  - Pi Camera (OV5647)
+  - Wi-Fi Telemetry Module
 
-    %% Drone Process
-    Capture[Capture Crop Image]
-    ReadGPS[Read GPS via MAVLink]
-    Upload[Upload via Wi-Fi]
-    Pi --> Capture
-    Pi --> ReadGPS
-    Pi --> Upload
+- **Process Flow from Drone**
+  - Pi captures crop images
+  - Reads GPS coordinates via MAVLink
+  - Uploads image to Cloudinary via Wi-Fi
 
-    %% Cloud Storage
-    Cloud[Cloudinary /drone-images]
+- **Cloud Storage**
+  - Cloudinary folder: `/drone-images`
+  - Stores image and metadata
 
-    %% ML Processing System
-    Webhook[Node.js Express Webhook]
-    Classifier[ML Classifier (CNN)]
-    DB[SQLite/CSV]
-    Webhook --> Classifier
-    Classifier --> DB
+- **ML Processing System (Laptop or Server)**
+  - Node.js Express Webhook Server
+  - Receives Cloudinary webhook on new upload
+  - Downloads image
+  - Runs ML classifier (e.g. CNN model)
+  - Stores classification result in SQLite/CSV
 
-    %% Dashboard (Optional)
-    Frontend[React/HTML Frontend]
-    ImageViewer[Image Viewer]
-    Map[Map View]
-    Trends[Historical Trends]
-    Status[Status & Alerts]
-    Recs[Recommendations]
-    Frontend -->|Displays| ImageViewer
-    Frontend --> Map
-    Frontend --> Trends
-    Frontend --> Status
-    Frontend --> Recs
-
-    Capture -->|Image + Metadata| Cloud
-    ReadGPS -->|Metadata| Cloud
-    Upload -->|Image + Metadata| Cloud
-    Cloud -->|Webhook on new upload| Webhook
-    DB -->|Classification Result| Frontend
-    Classifier -->|Failed Classification| Status
-```
+- **Optional Dashboard**
+  - Simple frontend (React or HTML)
+  - Displays image + classification status
+  - Shows map coordinates
 
 ---
 
