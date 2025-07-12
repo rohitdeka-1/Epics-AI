@@ -5,10 +5,13 @@ import path from "path";
 import os from "os";
 import dotenv from "dotenv";
 import chalk from "chalk";
+import connectDB from "./utils/db.js";
+import Image from "./models/Image.js";
 
 //-------------------------------------------------------------------------------------
 
 dotenv.config();
+await connectDB(); 
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -24,7 +27,7 @@ console.log("IMAGE PATH : ",imagesPath)
 
 console.log("Current working directory:", process.cwd());
 console.log("Watching directory:", imagesPath);
-console.log(chalk.bgBlue("Platform:", os.platform()));
+console.log(chalk.bgGray("Platform:", os.platform()));
 
 if (!fs.existsSync(imagesPath)) {
     console.error("Images directory does not exist at:", imagesPath);
@@ -51,6 +54,14 @@ watcher.on("add",async filePath=>{
             resource_type: "image"
         })
         console.log(chalk.bgGreen("Upload successful:", data.secure_url));
+
+        await Image.create({
+            filename: path.basename(filePath),
+            cloudinaryUrl: data.secure_url,
+            status: "pending",  
+          });
+
+          
         if(data){
             fs.unlinkSync(filePath);
             console.log(chalk.bgCyanBright("Deleted : ", filePath))
