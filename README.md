@@ -103,23 +103,6 @@ flowchart LR
 - **Data Flow:** Drone → Cloudinary → Webhook → ML → Dashboard
 - **Control Flow:** Classification result/alerts → Dashboard
 
----
-
-## How to Add an Image to the README
-
-1. Place your image (e.g., `diagram.png`) in the project root or a subfolder (e.g., `assets/diagram.png`).
-2. Reference it in your README using Markdown:
-
-   ```markdown
-   ![System Architecture](assets/diagram.png)
-   ```
-
-**Example:**
-```markdown
-![System Architecture](assets/diagram.png)
-```
-
----
 
 ## Quick Start
 
