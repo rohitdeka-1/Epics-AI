@@ -2,59 +2,61 @@
 
 ## Overview
 
-This project implements an end-to-end pipeline for crop monitoring using a drone equipped with a Raspberry Pi, camera, GPS, and telemetry. Images captured by the drone are uploaded to the cloud, processed by a machine learning model, and results are visualized on a dashboard.
+Epics-AI is an end-to-end AI-powered crop monitoring system using a drone equipped with a Raspberry Pi, camera, GPS, and telemetry. The system captures crop images, uploads them to the cloud, processes them with a machine learning model, and visualizes results on a dashboard.
 
 ---
 
 ## System Architecture Diagram
 
+### Visual Diagram
+
 ![System Architecture](assets/diagram1.png)
 
-**AI Drone Crop Monitoring System**
+### Mermaid Diagram (for Markdown viewers that support Mermaid)
 
 ```mermaid
 flowchart LR
-    subgraph Drone_System [Drone System]
-        APM[APM 2.8 Flight Controller]
-        GPS[GPS Module (NEO-M8N)]
-        Pi[Raspberry Pi Zero W2]
-        Cam[Pi Camera (OV5647)]
-        WiFi[Wi-Fi Telemetry Module]
-        Pi --> Cam
-        Pi --> GPS
-        Pi --> WiFi
-        Pi --> APM
-    end
+    %% Drone System
+    APM[APM 2.8 Flight Controller]
+    GPS[GPS Module (NEO-M8N)]
+    Pi[Raspberry Pi Zero W2]
+    Cam[Pi Camera (OV5647)]
+    WiFi[Wi-Fi Telemetry Module]
+    Pi --> Cam
+    Pi --> GPS
+    Pi --> WiFi
+    Pi --> APM
 
-    subgraph Drone_Process [Drone Process]
-        Capture[Capture Crop Image]
-        ReadGPS[Read GPS via MAVLink]
-        Upload[Upload via Wi-Fi]
-        Pi --> Capture
-        Pi --> ReadGPS
-        Pi --> Upload
-    end
+    %% Drone Process
+    Capture[Capture Crop Image]
+    ReadGPS[Read GPS via MAVLink]
+    Upload[Upload via Wi-Fi]
+    Pi --> Capture
+    Pi --> ReadGPS
+    Pi --> Upload
 
-    subgraph Cloud_Storage [Cloud Storage]
-        Cloud[Cloudinary /drone-images]
-    end
+    %% Cloud Storage
+    Cloud[Cloudinary /drone-images]
 
-    subgraph ML_Processing [ML Processing System]
-        Webhook[Node.js Express Webhook]
-        Classifier[ML Classifier (CNN)]
-        DB[SQLite/CSV]
-        Webhook --> Classifier
-        Classifier --> DB
-    end
+    %% ML Processing System
+    Webhook[Node.js Express Webhook]
+    Classifier[ML Classifier (CNN)]
+    DB[SQLite/CSV]
+    Webhook --> Classifier
+    Classifier --> DB
 
-    subgraph Dashboard [Dashboard (Optional)]
-        Frontend[React/HTML Frontend]
-        Frontend -->|Displays| ImageViewer[Image Viewer]
-        Frontend --> Map[Map View]
-        Frontend --> Trends[Historical Trends]
-        Frontend --> Status[Status & Alerts]
-        Frontend --> Recs[Recommendations]
-    end
+    %% Dashboard (Optional)
+    Frontend[React/HTML Frontend]
+    ImageViewer[Image Viewer]
+    Map[Map View]
+    Trends[Historical Trends]
+    Status[Status & Alerts]
+    Recs[Recommendations]
+    Frontend -->|Displays| ImageViewer
+    Frontend --> Map
+    Frontend --> Trends
+    Frontend --> Status
+    Frontend --> Recs
 
     Capture -->|Image + Metadata| Cloud
     ReadGPS -->|Metadata| Cloud
@@ -103,6 +105,18 @@ flowchart LR
 - **Data Flow:** Drone → Cloudinary → Webhook → ML → Dashboard
 - **Control Flow:** Classification result/alerts → Dashboard
 
+---
+
+## How to Add an Image to the README
+
+1. Place your image (e.g., `diagram1.png`) in the `assets/` folder (create it if it doesn't exist).
+2. Reference it in your README using Markdown:
+
+   ```markdown
+   ![System Architecture](assets/diagram1.png)
+   ```
+
+---
 
 ## Quick Start
 
