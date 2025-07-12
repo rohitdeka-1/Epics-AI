@@ -4,6 +4,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import path from "path";
 import os from "os";
 import dotenv from "dotenv";
+import chalk from "chalk";
 
 //-------------------------------------------------------------------------------------
 
@@ -19,24 +20,26 @@ cloudinary.config({
 
 const imagesPath = path.join(process.cwd(), "Images");
 console.log("IMAGE PATH : ",imagesPath)
-const watcher = chokidar.watch(imagesPath);
 
 
 console.log("Current working directory:", process.cwd());
 console.log("Watching directory:", imagesPath);
-console.log("Platform:", os.platform());
+console.log(chalk.bgBlue("Platform:", os.platform()));
 
 if (!fs.existsSync(imagesPath)) {
     console.error("Images directory does not exist at:", imagesPath);
-    fs.mkdir(process.cwd(),"Images")
+    fs.mkdirSync(imagesPath, { recursive: true });
+    
     console.log("Directory Created")
 }
+
+const watcher = chokidar.watch(imagesPath);
 
 //-------------------------------------------------------------------------------------
 
 watcher.on("ready",()=>{
     console.log("Scanned Success, Watching for changes..")
-    console.log("Ready to upload images from:", imagesPath);
+    console.log(chalk.yellowBright("Ready to upload images from:", imagesPath));
 })
 
 watcher.on("add",async filePath=>{
@@ -47,15 +50,15 @@ watcher.on("add",async filePath=>{
         const data = await cloudinary.uploader.upload(filePath,{
             resource_type: "image"
         })
-        console.log("Upload successful:", data.secure_url);
+        console.log(chalk.bgGreen("Upload successful:", data.secure_url));
         if(data){
             fs.unlinkSync(filePath);
-            console.log("Deleted : ", filePath)
+            console.log(chalk.bgCyanBright("Deleted : ", filePath))
         }
         return data;
     }
     catch(err){
-        console.error("Error Uploading : ", err);
+        console.error(chalk.red("Error Uploading : ", err));
     }
 
 })
