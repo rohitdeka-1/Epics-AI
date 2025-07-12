@@ -81,16 +81,6 @@ Epics-AI is an end-to-end AI-powered crop monitoring system using a drone equipp
 
 ---
 
-## How to Add an Image to the README
-
-1. Place your image (e.g., `diagram1.png`) in the `assets/` folder (create it if it doesn't exist).
-2. Reference it in your README using Markdown:
-
-   ```markdown
-   ![System Architecture](assets/diagram1.png)
-   ```
-
----
 
 ## Quick Start
 
