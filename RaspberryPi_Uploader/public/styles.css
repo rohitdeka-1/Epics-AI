@@ -1,0 +1,119 @@
+:root {
+  --bg-1: #f4f1eb;
+  --bg-2: #d9e6dc;
+  --panel: #fffdf8;
+  --ink: #1b2825;
+  --muted: #4f6660;
+  --accent: #0e7a5f;
+  --accent-press: #095f49;
+  --danger: #9e2c21;
+  --ring: rgba(14, 122, 95, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at top right, var(--bg-2), var(--bg-1));
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.panel {
+  width: min(460px, 100%);
+  background: var(--panel);
+  border: 1px solid #cad8d0;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(22, 36, 33, 0.12);
+  padding: 1.25rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  margin-top: 0.5rem;
+  color: var(--muted);
+}
+
+.label {
+  margin-top: 1rem;
+  display: block;
+  font-weight: 700;
+}
+
+#durationInput {
+  margin-top: 0.45rem;
+  width: 100%;
+  border: 1px solid #bcd0c8;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 0.65rem 0.7rem;
+}
+
+#durationInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.hint {
+  margin: 0.45rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+#startBtn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem;
+}
+
+#startBtn:active {
+  transform: translateY(1px);
+  background: var(--accent-press);
+}
+
+#startBtn:disabled {
+  opacity: 0.6;
+}
+
+.status-wrap {
+  margin-top: 1rem;
+  border-top: 1px solid #d7e3dd;
+  padding-top: 1rem;
+}
+
+#statusText {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+#remainingText,
+#capturesText {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.error {
+  color: var(--danger);
+  min-height: 1.1rem;
+  margin-top: 0.5rem;
+}

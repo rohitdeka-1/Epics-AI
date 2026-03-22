@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drone Capture Controller</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel">
+        <h1>Drone Capture Controller</h1>
+        <p class="subtitle">Trigger timed captures from your phone over hotspot network.</p>
+
+        <label for="durationInput" class="label">Duration (seconds, multiples of 10)</label>
+        <input id="durationInput" type="number" min="10" step="10" value="20" />
+        <p class="hint">Allowed: 10, 20, 30 ...</p>
+
+        <button id="startBtn" type="button">Start Capture</button>
+
+        <div class="status-wrap">
+          <h2 id="statusText">Ready for next capture</h2>
+          <p id="remainingText">Remaining: 0s</p>
+          <p id="capturesText">Captured: 0</p>
+          <p id="errorText" class="error"></p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
