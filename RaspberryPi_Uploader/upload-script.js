@@ -51,20 +51,24 @@ watcher.on("add",async filePath=>{
 
     try{
         const data = await cloudinary.uploader.upload(filePath,{
-            resource_type: "image"
+            resource_type: "image",
+            folder: "EPICS"
         })
         console.log(chalk.bgGreen("Upload successful:", data.secure_url));
 
-        await Image.create({
+        const savedImage = await Image.create({
             filename: path.basename(filePath),
             cloudinaryUrl: data.secure_url,
-            status: "pending",  
-          });
+            status: "uploaded",
+            cloudinaryPublicId: data.public_id,
+            cloudinaryAssetId: data.asset_id,
+            cloudinaryFormat: data.format,
+            cloudinaryBytes: data.bytes
+        });
 
-          
-        if(data){
+        if(savedImage?._id){
             fs.unlinkSync(filePath);
-            console.log(chalk.bgCyanBright("Deleted : ", filePath))
+            console.log(chalk.bgCyanBright("Deleted after metadata save:", filePath));
         }
         return data;
     }
