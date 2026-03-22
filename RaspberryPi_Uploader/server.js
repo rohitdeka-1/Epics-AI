@@ -14,6 +14,7 @@ const HOST = process.env.HOST || "0.0.0.0";
 const CAPTURE_SCRIPT = path.join(__dirname, "capture.py");
 const IMAGES_DIR = path.join(__dirname, "Images");
 const PYTHON_BIN = process.env.PYTHON_BIN || (process.platform === "win32" ? "python" : "python3");
+const UI_ADMIN_PASSWORD = process.env.UI_ADMIN_PASSWORD || "rhdpi@rhdpi";
 
 let state = {
 	running: false,
@@ -138,6 +139,51 @@ app.post("/api/capture", (req, res) => {
 		message: "Capture started.",
 		status: createStatusPayload(),
 	});
+});
+
+function runPrivilegedAction(action, password) {
+	let args;
+
+	if (action === "shutdown") {
+		args = ["-S", "-k", "/sbin/shutdown", "-h", "now"];
+	} else if (action === "reboot") {
+		args = ["-S", "-k", "/sbin/shutdown", "-r", "now"];
+	} else {
+		throw new Error("Invalid action");
+	}
+
+	const proc = spawn("sudo", args, { stdio: ["pipe", "ignore", "pipe"] });
+	proc.stdin.write(`${password}\n`);
+	proc.stdin.end();
+
+	proc.stderr.on("data", (chunk) => {
+		process.stderr.write(chunk.toString());
+	});
+
+	proc.on("error", (err) => {
+		console.error(`Failed to execute ${action}:`, err.message);
+	});
+}
+
+app.post("/api/system", (req, res) => {
+	const action = req.body?.action;
+	const password = String(req.body?.password || "");
+
+	if (!password || password !== UI_ADMIN_PASSWORD) {
+		return res.status(401).json({ message: "Invalid password." });
+	}
+
+	if (action !== "shutdown" && action !== "reboot") {
+		return res.status(400).json({ message: "Invalid action." });
+	}
+
+	res.status(202).json({
+		message: `${action === "shutdown" ? "Shutdown" : "Reboot"} requested. Device will go offline shortly.`,
+	});
+
+	setTimeout(() => {
+		runPrivilegedAction(action, password);
+	}, 1000);
 });
 
 app.get("/api/status", (req, res) => {

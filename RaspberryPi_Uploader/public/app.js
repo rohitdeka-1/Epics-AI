@@ -4,6 +4,9 @@ const statusText = document.getElementById("statusText");
 const remainingText = document.getElementById("remainingText");
 const capturesText = document.getElementById("capturesText");
 const errorText = document.getElementById("errorText");
+const systemPasswordInput = document.getElementById("systemPassword");
+const shutdownBtn = document.getElementById("shutdownBtn");
+const rebootBtn = document.getElementById("rebootBtn");
 
 function isValidDuration(value) {
   return Number.isInteger(value) && value >= 10 && value % 10 === 0;
@@ -68,10 +71,58 @@ async function startCapture() {
   renderStatus(payload.status);
 }
 
+async function requestSystemAction(action) {
+  const password = systemPasswordInput.value;
+
+  if (!password) {
+    errorText.textContent = "Enter the system password first.";
+    return;
+  }
+
+  shutdownBtn.disabled = true;
+  rebootBtn.disabled = true;
+  errorText.textContent = "";
+
+  const response = await fetch("/api/system", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action, password }),
+  });
+
+  const payload = await response.json();
+
+  if (!response.ok) {
+    errorText.textContent = payload.message || "System action failed.";
+    shutdownBtn.disabled = false;
+    rebootBtn.disabled = false;
+    return;
+  }
+
+  statusText.textContent = payload.message;
+  remainingText.textContent = "Remaining: -";
+  capturesText.textContent = "Captured: -";
+}
+
 startBtn.addEventListener("click", () => {
   startCapture().catch((err) => {
     errorText.textContent = err.message;
     startBtn.disabled = false;
+  });
+});
+
+shutdownBtn.addEventListener("click", () => {
+  requestSystemAction("shutdown").catch((err) => {
+    errorText.textContent = err.message;
+    shutdownBtn.disabled = false;
+    rebootBtn.disabled = false;
+  });
+});
+
+rebootBtn.addEventListener("click", () => {
+  requestSystemAction("reboot").catch((err) => {
+    errorText.textContent = err.message;
+    shutdownBtn.disabled = false;
+    rebootBtn.disabled = false;
   });
 });
 

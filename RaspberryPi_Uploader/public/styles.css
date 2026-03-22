@@ -75,6 +75,21 @@ h1 {
   font-size: 0.92rem;
 }
 
+#systemPassword {
+  margin-top: 0.45rem;
+  width: 100%;
+  border: 1px solid #bcd0c8;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 0.65rem 0.7rem;
+}
+
+#systemPassword:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
 #startBtn {
   width: 100%;
   border: none;
@@ -92,6 +107,42 @@ h1 {
 }
 
 #startBtn:disabled {
+  opacity: 0.6;
+}
+
+.system-wrap {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #d7e3dd;
+}
+
+.system-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.danger-btn,
+.secondary-btn {
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.7rem;
+}
+
+.danger-btn {
+  background: #b02a1c;
+}
+
+.secondary-btn {
+  background: #2b5e56;
+}
+
+.danger-btn:disabled,
+.secondary-btn:disabled {
   opacity: 0.6;
 }
 

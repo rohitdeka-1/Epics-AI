@@ -18,6 +18,16 @@
 
         <button id="startBtn" type="button">Start Capture</button>
 
+        <div class="system-wrap">
+          <label for="systemPassword" class="label">System password</label>
+          <input id="systemPassword" type="password" placeholder="Enter password" autocomplete="current-password" />
+
+          <div class="system-actions">
+            <button id="shutdownBtn" type="button" class="danger-btn">Shutdown Pi</button>
+            <button id="rebootBtn" type="button" class="secondary-btn">Reboot Pi</button>
+          </div>
+        </div>
+
         <div class="status-wrap">
           <h2 id="statusText">Ready for next capture</h2>
           <p id="remainingText">Remaining: 0s</p>
