@@ -3,6 +3,7 @@ import { spawn } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import os from "os";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,6 +53,21 @@ function createStatusPayload() {
 		statusText: state.running ? "Capturing..." : "Ready for next capture",
 		lastError: state.lastError,
 	};
+}
+
+function getLocalIPv4Addresses() {
+	const interfaces = os.networkInterfaces();
+	const ipList = [];
+
+	Object.values(interfaces).forEach((items) => {
+		(items || []).forEach((item) => {
+			if (item && item.family === "IPv4" && !item.internal) {
+				ipList.push(item.address);
+			}
+		});
+	});
+
+	return [...new Set(ipList)];
 }
 
 app.use(express.json());
@@ -133,4 +149,11 @@ app.listen(PORT, HOST, () => {
 	console.log(`Using Python binary: ${PYTHON_BIN}`);
 	console.log(`Serving UI from ${path.join(__dirname, "public")}`);
 	console.log(`Saving captures to ${IMAGES_DIR}`);
+
+	const ips = getLocalIPv4Addresses();
+	if (ips.length > 0) {
+		ips.forEach((ip) => {
+			console.log(`Phone UI URL: http://${ip}:${PORT}`);
+		});
+	}
 });
