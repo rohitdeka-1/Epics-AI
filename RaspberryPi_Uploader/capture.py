@@ -2,7 +2,8 @@ import argparse
 import os
 import subprocess
 import time
-from datetime import datetime
+import shutil
+from datetime import datetime, timezone
 
 
 def parse_args():
@@ -18,9 +19,19 @@ def validate_duration(duration):
         raise ValueError("duration must be >= 10 and a multiple of 10")
 
 
+def resolve_camera_command():
+    for candidate in ("rpicam-still", "libcamera-still"):
+        if shutil.which(candidate):
+            return candidate
+    raise RuntimeError(
+        "No camera capture binary found. Install rpicam-apps or libcamera-apps and ensure rpicam-still/libcamera-still is in PATH."
+    )
+
+
 def main():
     args = parse_args()
     validate_duration(args.duration)
+    camera_cmd = resolve_camera_command()
 
     interval = args.interval
     output_dir = args.output_dir
@@ -33,12 +44,12 @@ def main():
     print(f"START duration={args.duration}s interval={interval}s output={output_dir}", flush=True)
 
     while time.time() < end:
-        timestamp = datetime.utcnow().strftime("%Y%m%dT%H%M%S_%f")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%f")
         filename = os.path.join(output_dir, f"image_{timestamp}.jpg")
 
         result = subprocess.run(
             [
-                "libcamera-still",
+                camera_cmd,
                 "-o",
                 filename,
                 "--nopreview",
@@ -53,7 +64,7 @@ def main():
 
         if result.returncode != 0:
             print(f"ERROR capture_failed file={filename} details={result.stderr.strip()}", flush=True)
-            raise RuntimeError("libcamera-still failed")
+            raise RuntimeError(f"{camera_cmd} failed")
 
         captures += 1
         print(f"CAPTURED file={filename}", flush=True)
