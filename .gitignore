@@ -27,3 +27,6 @@ dist-ssr
 
 AI Model/model/*.keras
 AI Model/model/*.keras
+AI Model/venv/
+AI Model/model/*.keras
+AI Model/.download-state.json

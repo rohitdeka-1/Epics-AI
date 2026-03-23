@@ -1,0 +1,74 @@
+[
+  {
+    "image": "./Images\\EPICS_cthuqpaxskeycj5rkub3.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\EPICS_dc47fnzf36ykmqptzbkm.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\EPICS_ir7hm2zc2je84sglnmmx.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\EPICS_iya3xxbtq7fekurfsocv.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\EPICS_l0eps0jo7lspgdrharfa.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\EPICS_plyengnv8dnzmdafyhzy.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\EPICS_qmwynwgwystn3rxi1wgi.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\EPICS_tqclywvlf7xot9in99ax.jpg",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  },
+  {
+    "image": "./Images\\tomato_targetspot.png",
+    "prediction": {
+      "name": "Background_without_leaves",
+      "cause": "No disease or plant detected.",
+      "cure": "Not applicable."
+    }
+  }
+]

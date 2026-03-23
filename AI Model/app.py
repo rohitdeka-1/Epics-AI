@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # -------------------- CONFIG --------------------
 
-MODEL_PATH = "models/plant_disease_classification.keras"
+MODEL_PATH = "model/plant_disease_classification.keras"
 LABELS_PATH = "plant_disease.json"
 STATE_FILE = "state.json"
 RESULTS_FILE = "results.json"
@@ -29,8 +29,16 @@ with open(LABELS_PATH, 'r') as file:
 def load_state():
     if not os.path.exists(STATE_FILE):
         return {"processed": []}
-    with open(STATE_FILE, "r") as f:
-        return json.load(f)
+    try:
+        with open(STATE_FILE, "r") as f:
+            data = json.load(f)
+            if "processed" not in data:
+                data["processed"] = []
+            return data
+    except json.JSONDecodeError:
+        # File exists but empty or invalid, reset it
+        return {"processed": []}
+
 
 def save_state(state):
     with open(STATE_FILE, "w") as f:
