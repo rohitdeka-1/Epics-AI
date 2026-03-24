@@ -19,7 +19,9 @@ IMAGE_FOLDER = "./Images"
 
 # -------------------- LOAD MODEL --------------------
 
+print("Loading model...")
 model = tf.keras.models.load_model(MODEL_PATH)
+print("Model loaded successfully!")
 
 with open(LABELS_PATH, 'r') as file:
     plant_disease = json.load(file)
