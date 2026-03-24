@@ -22,6 +22,7 @@ cloudinary.config({
 //-------------------------------------------------------------------------------------
 
 const imagesPath = path.join(process.cwd(), "Images");
+const targetFolder = process.env.CLOUDINARY_TARGET_FOLDER || "EPICS";
 console.log("IMAGE PATH : ",imagesPath)
 
 
@@ -50,10 +51,18 @@ watcher.on("add",async filePath=>{
     console.log("NEW FILE: ",filePath);
 
     try{
+        const baseName = path.parse(path.basename(filePath)).name;
+        const uniquePublicId = `${targetFolder}/${baseName}_${Date.now()}`;
+
         const data = await cloudinary.uploader.upload(filePath,{
-            resource_type: "image"
+            resource_type: "image",
+            folder: targetFolder,
+            asset_folder: targetFolder,
+            public_id: uniquePublicId,
+            overwrite: false
         })
         console.log(chalk.bgGreen("Upload successful:", data.secure_url));
+        console.log(chalk.bgBlue("Cloudinary public_id:", data.public_id));
 
         await Image.create({
             filename: path.basename(filePath),
